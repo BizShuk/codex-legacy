@@ -1,0 +1,448 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='app' />
+        <option name='appversion' />
+        <option name='package' />
+        <option name='server' />
+        <option name='tempServer' />
+      </options>
+    </context>
+    <description><![CDATA[pass 
+${app} : from application job
+${appversion} : from application job
+${package} : from application job 
+${server} : from tomcat server job]]></description>
+    <executionEnabled>true</executionEnabled>
+    <group>utils</group>
+    <id>23818eb2-86d2-4ab9-9b9e-a6678863e6fb</id>
+    <loglevel>INFO</loglevel>
+    <name>DownloadArtifact</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <script><![CDATA[#!/bin/bash
+
+echo ===== start job $RD_JOB_NAME ======
+AppWar=${RD_OPTION_APP}.war
+
+ssh -i /var/lib/rundeck/.ssh/id_rsa tliu@${RD_OPTION_TEMPSERVER} "
+scp ${AppWar} tomcat@${RD_OPTION_SERVER}:./${AppWar}
+"]]></script>
+        <scriptargs />
+      </command>
+    </sequence>
+    <uuid>23818eb2-86d2-4ab9-9b9e-a6678863e6fb</uuid>
+  </job>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='app' />
+        <option name='appversion' />
+        <option name='package' />
+        <option name='pathPrefix' value='<ReleaseRepositoryURLprefix>' />
+        <option name='repo' value='<ReleaseRepositoryRepo>' />
+        <option name='tempServer' />
+      </options>
+    </context>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <group>utils</group>
+    <id>937d7a15-472d-4a2c-90cd-938544aad316</id>
+    <loglevel>INFO</loglevel>
+    <name>DownloadArtifactToTempServer</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <script><![CDATA[#!/bin/bash
+
+AppWar="${RD_OPTION_APP}.war"
+AppVersionWar="${RD_OPTION_APP}-${RD_OPTION_APPVERSION}.war"
+
+fullDownloadPath=${RD_OPTION_PATHPREFIX}/${RD_OPTION_REPO}/${RD_OPTION_PACKAGE}/${RD_OPTION_APP}/${RD_OPTION_APPVERSION}/${AppVersionWar}
+
+
+ssh -i /var/lib/rundeck/.ssh/id_rsa tliu@${RD_OPTION_TEMPSERVER} "
+    wget -O ${AppWar} ${fullDownloadPath}
+"
+]]></script>
+        <scriptargs />
+      </command>
+    </sequence>
+    <uuid>937d7a15-472d-4a2c-90cd-938544aad316</uuid>
+  </job>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='app' value='<Application A>' />
+        <option name='appversion' value='<ApplicationVersion>' />
+        <option name='package' value='<package path>' />
+      </options>
+    </context>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <group>application</group>
+    <id>1e81bb4f-e7a7-47d9-8e37-648b7122edc8</id>
+    <loglevel>INFO</loglevel>
+    <name>Application A</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <jobref group='TomcatServers' name='server1tomcat2'>
+          <arg line='-app ${option.app} -appversion ${option.appversion} -package ${option.package}' />
+        </jobref>
+      </command>
+      <command>
+        <jobref group='TomcatServers' name='server2tomcat2'>
+          <arg line='-app ${option.app} -appversion ${option.appversion} -package ${option.package}' />
+        </jobref>
+      </command>
+    </sequence>
+    <uuid>1e81bb4f-e7a7-47d9-8e37-648b7122edc8</uuid>
+  </job>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='app' />
+        <option name='appversion' />
+        <option name='package' />
+        <option name='server' value='<server1IPaddress>' />
+        <option name='tempServer' value='<ProxyServerIPaddress>' />
+        <option name='tomcatBin' value='<TomcatBinPath>' />
+        <option name='tomcatWebapps' value='<TomcatWebappsPath>' />
+      </options>
+    </context>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <group>TomcatServers</group>
+    <id>16ecf798-410a-4230-bc1e-9caa351c8262</id>
+    <loglevel>INFO</loglevel>
+    <name>ql-b01-tomcat1</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <jobref group='utils' name='DownloadArtifactToTempServer'>
+          <arg line='-app ${option.app} -appversion ${option.appversion} -package ${option.package} -tempServer ${option.tempServer}' />
+        </jobref>
+      </command>
+      <command>
+        <jobref group='utils' name='DownloadArtifact'>
+          <arg line='-app ${option.app} -appversion ${option.appversion} -package ${option.package} -server ${option.server} -tempServer ${option.tempServer}' />
+        </jobref>
+      </command>
+      <command>
+        <jobref group='utils' name='stopTomcat'>
+          <arg line='-server ${option.server} -tomcatBin ${option.tomcatBin}' />
+        </jobref>
+      </command>
+      <command>
+        <jobref group='utils' name='updateArtifact'>
+          <arg line='-app ${option.app} -server ${option.server} -tomcatWebapps ${option.tomcatWebapps}' />
+        </jobref>
+      </command>
+      <command>
+        <jobref group='utils' name='startTomcat'>
+          <arg line='-server ${option.server} -tomcatBin ${option.tomcatBin}' />
+        </jobref>
+      </command>
+    </sequence>
+    <uuid>16ecf798-410a-4230-bc1e-9caa351c8262</uuid>
+  </job>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='app' />
+        <option name='appversion' />
+        <option name='package' />
+        <option name='server' value='<server1IPaddress>' />
+        <option name='tempServer' value='<ProxyServerIPaddress>' />
+        <option name='tomcatBin' value='<TomcatBinPath>' />
+        <option name='tomcatWebapps' value='<TomcatWebappsPath>' />
+      </options>
+    </context>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <group>TomcatServers</group>
+    <id>dd6a5a00-308d-4288-b539-ed1140d17680</id>
+    <loglevel>INFO</loglevel>
+    <name>server1tomcat2</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <jobref group='utils' name='DownloadArtifactToTempServer'>
+          <arg line='-app ${option.app} -appversion ${option.appversion} -package ${option.package} -tempServer ${option.tempServer}' />
+        </jobref>
+      </command>
+      <command>
+        <jobref group='utils' name='DownloadArtifact'>
+          <arg line='-app ${option.app} -appversion ${option.appversion} -package ${option.package} -server ${option.server} -tempServer ${option.tempServer}' />
+        </jobref>
+      </command>
+      <command>
+        <jobref group='utils' name='stopTomcat'>
+          <arg line='-server ${option.server} -tomcatBin ${option.tomcatBin}' />
+        </jobref>
+      </command>
+      <command>
+        <jobref group='utils' name='updateArtifact'>
+          <arg line='-app ${option.app} -server ${option.server} -tomcatWebapps ${option.tomcatWebapps}' />
+        </jobref>
+      </command>
+      <command>
+        <jobref group='utils' name='startTomcat'>
+          <arg line='-server ${option.server} -tomcatBin ${option.tomcatBin}' />
+        </jobref>
+      </command>
+    </sequence>
+    <uuid>dd6a5a00-308d-4288-b539-ed1140d17680</uuid>
+  </job>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='app' />
+        <option name='appversion' />
+        <option name='package' />
+        <option name='server' value='<Server2IPaddress>' />
+        <option name='tempServer' value='<ProxyServerIPaddress>' />
+        <option name='tomcatBin' value='<TomcatBinPath>' />
+        <option name='tomcatWebapps' value='<TomcatWebappsPath>' />
+      </options>
+    </context>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <group>TomcatServers</group>
+    <id>0c0e3292-3b42-4374-8c42-503731fbd8df</id>
+    <loglevel>INFO</loglevel>
+    <name>ql-b02-tomcat1</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <jobref group='utils' name='DownloadArtifactToTempServer'>
+          <arg line='-app ${option.app} -appversion ${option.appversion} -package ${option.package} -tempServer ${option.tempServer}' />
+        </jobref>
+      </command>
+      <command>
+        <jobref group='utils' name='DownloadArtifact'>
+          <arg line='-app ${option.app} -appversion ${option.appversion} -package ${option.package} -server ${option.server} -tempServer ${option.tempServer}' />
+        </jobref>
+      </command>
+      <command>
+        <jobref group='utils' name='stopTomcat'>
+          <arg line='-server ${option.server} -tomcatBin ${option.tomcatBin}' />
+        </jobref>
+      </command>
+      <command>
+        <jobref group='utils' name='updateArtifact'>
+          <arg line='-app ${option.app} -server ${option.server} -tomcatWebapps ${option.tomcatWebapps}' />
+        </jobref>
+      </command>
+      <command>
+        <jobref group='utils' name='startTomcat'>
+          <arg line='-server ${option.server} -tomcatBin ${option.tomcatBin}' />
+        </jobref>
+      </command>
+    </sequence>
+    <uuid>0c0e3292-3b42-4374-8c42-503731fbd8df</uuid>
+  </job>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='app' />
+        <option name='appversion' />
+        <option name='package' />
+        <option name='server' value='<Server2IPaddress>' />
+        <option name='tempServer' value='<ProxyServerIPaddress>' />
+        <option name='tomcatBin' value='<TomcatBinPath>' />
+        <option name='tomcatWebapps' value='<TomcatWebappsPath>' />
+      </options>
+    </context>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <group>TomcatServers</group>
+    <id>91e195f0-1f02-4d23-938e-8a9d82607cd4</id>
+    <loglevel>INFO</loglevel>
+    <name>server2tomcat2</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <jobref group='utils' name='DownloadArtifactToTempServer'>
+          <arg line='-app ${option.app} -appversion ${option.appversion} -package ${option.package} -tempServer ${option.tempServer}' />
+        </jobref>
+      </command>
+      <command>
+        <jobref group='utils' name='DownloadArtifact'>
+          <arg line='-app ${option.app} -appversion ${option.appversion} -package ${option.package} -server ${option.server} -tempServer ${option.tempServer}' />
+        </jobref>
+      </command>
+      <command>
+        <jobref group='utils' name='stopTomcat'>
+          <arg line='-server ${option.server} -tomcatBin ${option.tomcatBin}' />
+        </jobref>
+      </command>
+      <command>
+        <jobref group='utils' name='updateArtifact'>
+          <arg line='-app ${option.app} -server ${option.server} -tomcatWebapps ${option.tomcatWebapps}' />
+        </jobref>
+      </command>
+      <command>
+        <jobref group='utils' name='startTomcat'>
+          <arg line='-server ${option.server} -tomcatBin ${option.tomcatBin}' />
+        </jobref>
+      </command>
+    </sequence>
+    <uuid>91e195f0-1f02-4d23-938e-8a9d82607cd4</uuid>
+  </job>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='app' value='<Application B>' />
+        <option name='appversion' value='<ApplicationVersion>' />
+        <option name='package' value='<package path>' />
+      </options>
+    </context>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <group>application</group>
+    <id>7e720432-7e18-4fcb-ab62-2da75dbcc9e5</id>
+    <loglevel>INFO</loglevel>
+    <name>Application B</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <jobref group='TomcatServers' name='server1tomcat2'>
+          <arg line='-app ${option.app} -appversion ${option.appversion} -package ${option.package}' />
+        </jobref>
+      </command>
+      <command>
+        <jobref group='TomcatServers' name='server2tomcat2'>
+          <arg line='-app ${option.app} -appversion ${option.appversion} -package ${option.package}' />
+        </jobref>
+      </command>
+    </sequence>
+    <uuid>7e720432-7e18-4fcb-ab62-2da75dbcc9e5</uuid>
+  </job>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='server' />
+        <option name='tomcatBin' />
+      </options>
+    </context>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <group>utils</group>
+    <id>4b7e1d63-59e2-43f3-949d-4fd1d5e0717c</id>
+    <loglevel>INFO</loglevel>
+    <name>startTomcat</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <script><![CDATA[#!/bin/bash
+
+echo ======= start job $RD_JOB_NAME =======
+
+ssh -i /var/lib/rundeck/.ssh/id_rsa tomcat@${RD_OPTION_SERVER} "
+cd ${RD_OPTION_TOMCATBIN}
+./catalina.sh start
+"]]></script>
+        <scriptargs />
+      </command>
+    </sequence>
+    <uuid>4b7e1d63-59e2-43f3-949d-4fd1d5e0717c</uuid>
+  </job>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='server' />
+        <option name='tomcatBin' />
+      </options>
+    </context>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <group>utils</group>
+    <id>0193e8de-07a4-438a-b903-e3560818de41</id>
+    <loglevel>INFO</loglevel>
+    <name>stopTomcat</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <script><![CDATA[#!/bin/bash
+
+echo ======= start job $RD_JOB_NAME =======
+
+ssh -i /var/lib/rundeck/.ssh/id_rsa tomcat@${RD_OPTION_SERVER} "
+cd ${RD_OPTION_TOMCATBIN}
+./catalina.sh stop
+"]]></script>
+        <scriptargs />
+      </command>
+    </sequence>
+    <uuid>0193e8de-07a4-438a-b903-e3560818de41</uuid>
+  </job>
+  <job>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <id>7bb4bae8-4ed0-4ba2-98bf-951e6b2a1cf5</id>
+    <loglevel>INFO</loglevel>
+    <name>test</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <exec>echo 123</exec>
+      </command>
+    </sequence>
+    <uuid>7bb4bae8-4ed0-4ba2-98bf-951e6b2a1cf5</uuid>
+  </job>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='app' />
+        <option name='server' />
+        <option name='tomcatWebapps' />
+      </options>
+    </context>
+    <description>From /home/tomcat/app.war to tomcatWebapps</description>
+    <executionEnabled>true</executionEnabled>
+    <group>utils</group>
+    <id>0df6e278-e97f-4042-a84e-7b9e4b0460f4</id>
+    <loglevel>INFO</loglevel>
+    <name>updateArtifact</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <script><![CDATA[#!/bin/bash
+
+echo ======= start job $RD_JOB_NAME =======
+
+if [ -z $RD_OPTION_APP ] 
+then
+    exit 255
+fi
+
+AppWar="${RD_OPTION_APP}.war"
+
+ssh -i /var/lib/rundeck/.ssh/id_rsa tomcat@${RD_OPTION_SERVER} "
+cd $RD_OPTION_TOMCATWEBAPPS
+mv ${AppWar} ~/${AppWar}.bak
+rm -r "${RD_OPTION_APP}"*
+mv ~/${AppWar} ./
+"]]></script>
+        <scriptargs />
+      </command>
+    </sequence>
+    <uuid>0df6e278-e97f-4042-a84e-7b9e4b0460f4</uuid>
+  </job>
+</joblist>

@@ -1,0 +1,6 @@
+    Note:
+        xargs:
+            ☐ -0 is for dealing with space
+        tee:
+            ☐ it should have some content from pipe as input
+            ☐ handle file too long issue because no ending input

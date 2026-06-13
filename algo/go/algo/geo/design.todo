@@ -1,0 +1,13 @@
+
+Solutions:
+    ☐ Simgle grid
+    ☐ Hash-based
+        [Pattern]: [Geo Design]
+            1. base32
+            2. Higher level of prefix has more large area
+
+        0000 0001 0100 0101   => 1, 2 ,3 ,4 or base32
+        0010 0011 0100 0101
+        1000 1001 1100 1101
+        1010 1011 1100 1101
+    ☐ Tree-based (top-down)

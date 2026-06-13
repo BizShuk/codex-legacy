@@ -1,0 +1,12 @@
+This is init func...
+goos: darwin
+goarch: amd64
+pkg: github.com/bizshuk/techstack/golang/fundation
+cpu: Intel(R) Core(TM) i5-5250U CPU @ 1.60GHz
+BenchmarkCase1-4   	1000000000	         0.4349 ns/op
+BenchmarkCase1-4   	1000000000	         0.4277 ns/op
+BenchmarkCase1-4   	1000000000	         0.4550 ns/op
+BenchmarkCase1-4   	1000000000	         0.6220 ns/op
+BenchmarkCase1-4   	1000000000	         0.3870 ns/op
+PASS
+ok  	github.com/bizshuk/techstack/golang/fundation	4.161s

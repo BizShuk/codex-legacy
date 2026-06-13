@@ -1,0 +1,29 @@
+Chat System:
+
+    Requirement:
+        ☐ Group chat
+        ☐ User  chat
+        ☐ Real-time communication (websocket server)
+        ☐ Notification if new message comes
+        ☐ User Mapping Service? Track server ID of user session
+
+
+
+    Relationship:
+        ☐ User to User
+        ☐ User to Group
+        ☐ Group to User (Use index as User to Group)
+
+    Message:
+        ☐ Row record (message id)
+        ☐ Message bucket
+
+    Cache:
+        Cache each message by message id is not efficient. Bundle 10-100 message into one cache key(mod 10 or mod 100) will be good.
+        ☐ If new message is coming, using write-throught cache method to update last message bucket(cache key)
+        ☐ If users look for history, cache-aside/read-throught cache method can be used.
+    User-User:
+        uid(lower)-uid(higher) to form a partition key, and each message is a message id(auto-increment)
+
+
+

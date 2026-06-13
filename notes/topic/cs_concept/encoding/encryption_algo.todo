@@ -1,0 +1,16 @@
+Symmetric:
+    ☐ AES
+    ☐ DES
+
+Asymmetric:
+    ☐ RSA
+    ☐ DSS
+    ☐ ECC
+    ☐ Diffie-Hellman exchange method
+
+Hash:
+    ☐ SHA-1, SHA-2, SHA-3
+    ☐ MD-5
+    ☐ DSA
+
+TODO: encryption algo pros/cons

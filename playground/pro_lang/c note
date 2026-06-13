@@ -1,0 +1,11 @@
+C note
+
+build .so 
+	gcc -shared -o libhello.so -fPIC hello.c
+
+  cmd note
+
+gcc
+
+g++ 
+

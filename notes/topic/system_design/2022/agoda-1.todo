@@ -1,0 +1,35 @@
+Hotel Price Service:
+    There are two groups of user, traveler and hotel staff.
+    functions:
+        ☐ getPrice(hotelID, guest number)
+        ☐ getPrice(hotelID)
+        ☐ setPrice(hotelID, price list)
+
+    Improvement:
+        ☐ Scale instances by CPU, memory, Network traffic. Those matrix will be multiply by number of requests per node
+        ☐ Scale before peak hour
+        ☐ Increase server zone for availability.
+        ☐ Add LB for single entry point for client.
+        ☐ Replicate DB and read price from replicas
+        ☐ Hotel data can be based on region, [multiple data center concept].
+        ☐ Add cache between DB and price services
+        ☐ Preload the price for popular hotels. Don't load all hotels, it increases the cache cost.
+        ☐ LRU eviction on cache
+        ☐ Sharding database
+        ☐ Consistent Hashing for sharding instances
+        ☐ Use cache as main storage and update DB asynchronously.
+            pros: increase execution time, cons: risk of loss data.
+
+Booking Reminder Service:
+    Send summary of reservation in next date. 200k notification.
+
+    Improvement:
+        ☐ Update summary in another DB after booking. The summary is aggregated by date, hotel.
+        ☐ Divide DB mentioned in previous to 24 for each timezone.
+        => This is for database scale only, not for speed.
+        ☐ The reminder service can be scale as well, as long as the query is not overlay.
+        ☐ Real-time solution, notify hotel staff as soon as possible
+        ☐ Priority Queue*24 to hold booking data and load next date for notification only.
+        ☐ [Question] What about booking in current date?
+        ☐ [???] ZooKeeper suggestion from interviewer.
+

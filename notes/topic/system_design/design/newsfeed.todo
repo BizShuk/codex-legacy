@@ -1,0 +1,35 @@
+NewsFeed System Design:
+    News Feed is a system to provide top stories to end-user. Usually, it shows in index page of feed page. Facebook/Twitter is the reality of News Feed, but with account-level feed.
+    Simple Design:
+        ☐ Users can get top 1000 stories.
+        ☐ When time rolling, top 1000 stories are updated.
+        ☐ Global scale and large traffic
+        Solution:
+            ☐ With simple design, it will come to Sliding Window algo to calculate the view count of each feed.
+            ☐ In order to scale, it needs some patitions and map reduce to storage those metadata.
+            ☐ Since feed is not required to be up-to-date immediately, Asynchronous can be used to facilitate the speed/process with queue.
+            ☐ Now we have feed view counts in each partition. Merge Sort for partitions can be used to figure out top-k feeds.
+            ☐ The result of top-K feeds can be stored in cache to provide faster/low latency access.
+            ☐ WAL might be used for recovery
+
+    Category Design:
+        ☐ feed has different categories, it needs 1000 feeds for each category.
+        Solution:
+            ☐ Use tag as category key to store feeds for category.
+            ☐ Each category  is a priority queue. Only feed view count is greater than 1000th feed view count will be updated into the queue.
+    User Account Design:
+        ☐ Now not use category, user would like to see only those they follow
+        Solution:
+            ☐ Use user name as tag/category for who they follow
+            ☐ Two approaches:
+                ☐ Feeds go to user's category
+                    ✔ Users are easy to get their feeds. If just use a reference number in feeds, it can resolve problem caused by modification after submit.
+                    ✘ It costs more on feed references(duplication).
+                    ✘ Longer posting time due to more categories to distribute.
+                ☐ User fetch those category they follow.
+                    ✔ Posting is simple and straightforward
+                    ✘ slow and complex logic to fetch feeds from friends
+
+    Advanced Designs:
+        ☐ Privacy
+        ☐

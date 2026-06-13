@@ -1,0 +1,39 @@
+hadoop settings
+
+新增group user(sudor)
+	sudo groupadd hadoop
+	sudo usermod -g hadoop shuk
+
+
+
+sudo wget http://ftp.mirror.tw/pub/apache/hadoop/common/hadoop-2.2.0/hadoop-2.2.0.tar.gz
+sudo tar -xvzf hadoop-2.2.0.tar.gz
+sudo mv hadoop-2.2.0 /opt/hadoop
+sudo chown -R shuk:hadoop /opt/hadoop
+
+
+vim ~/.bashrc
+	#貼上以下內容
+	export HADOOP_HOME=/opt/hadoop
+	export HADOOP_MAPRED_HOME=$HADOOP_HOME
+	export HADOOP_COMMON_HOME=$HADOOP_HOME
+	export HADOOP_HDFS_HOME=$HADOOP_HOME
+	export YARN_HOME=$HADOOP_HOME
+	export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+	export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop
+
+	export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
+
+#存檔後使配置立即生效
+source ~/.bashrc
+
+#驗證可否呼叫hadoop指令
+hadoop version
+
+
+
+
+
+
+
+

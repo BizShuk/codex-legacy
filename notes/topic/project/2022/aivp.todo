@@ -1,0 +1,19 @@
+AIVP:
+    AIVP is a project to automate process between chip machine and machine learning.
+    ☐ API gateway, API
+    ☐ Model Service, Machine learning service
+    ☐ Review Service, for business unit review and feedback to system
+    ☐ Case Recorder, for modelor review
+    ☐ GPU-Scheduler, job mode
+    ☐ Monitoring
+        ☐ Prometheus
+        ☐ Grafana
+        ☐ AlertingMessage
+    ☐ Logger, EFK
+    ☐ Kubernetes
+    ☐
+
+
+    Traffic:
+        ☐ AIDR, 4.5m images finished < 15mins,
+        ☐ 1 topic around 700k request/day

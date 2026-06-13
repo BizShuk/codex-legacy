@@ -1,0 +1,155 @@
+spark settings
+
+設定java	# jdk jre 可能可以擇一就好
+	sudo apt-get install default-jre
+	sudo apt-get install default-jdk
+
+	vim .bashrc 
+		export JAVA_HOME=/usr/lib/jvm/default-java
+
+設定 scala
+	wget http://www.scala-lang.org/files/archive/scala-2.9.3.tgz
+	tar xvf scala-2.9.3.tgz
+	sudo mv scala-2.9.3 /usr/lib
+	sudo ln -s /usr/lib/scala-2.9.3 /usr/lib/scala
+
+	vim .bashrc 
+		export SCALA_HOME=/usr/lib/scala
+		export PATH=$PATH:$SCALA_HOME/bin
+
+設定 spark
+	找一個適合自己pre-build版本
+	wget http://d3kbcqa49mib13.cloudfront.net/spark-1.1.0-bin-hadoop2.4.tgz
+	tar zxvf spark-1.1.0-bin-hadoop2.4.tgz
+	sudo mv spark-1.1.0-bin-hadoop2.4 /usr/lib/spark-1.1_h2.4
+	sudo ln -s /usr/lib/spark-1.1_h2.4 /usr/lib/spark
+
+	vim .bashrc 
+		export SPARK_HOME=/usr/lib/spark
+		export PATH=$PATH:$SPARK_HOME/bin
+
+
+	?
+	使用 ssh-keygen 產生key pair時會詢問你一組密碼(實際上你可以偷懶使用空白密碼)，然後再透過ssh-copy-id這個tool 幫你把key 傳到其他台機器 
+	# ssh-keygen -t rsa -f ~/.ssh/id_rsa -b 4096 -C “iamcomment”
+	# ssh-copy-id -i .ssh/id_rsa.pub root@lab-hadoop-m2
+	# ssh-copy-id -i .ssh/id_rsa.pub root@lab-hadoop-m3
+
+	sudo vim /usr/lib/spark/conf/slaves	# 設定slave , ip or hostname(須在/etc/hosts, /etc/hostanme設定)
+		localhos
+		lab-hadoop-m1
+		lab-hadoop-m2
+
+	sudo vim /usr/lib/spark/conf/spark-env.sh # copy by /usr/lib/conf/spark.env.sh.template
+		SPARK_MASTER_WEBUI_PORT=8082	# web ui port
+		SPARK_WORKER_MEMORY=1g			# worker memory
+
+	vim .bashrc
+		alias spark_master='/usr/lib/spark/sbin/start-master.sh'
+		alias spark_all='/usr/lib/spark/sbin/start-all.sh'
+		alias stop_spark_master='/usr/lib/spark/sbin/stop-master.sh'
+		alias stop_spark_all='/usr/lib/spark/sbin/stop-all.sh'
+
+
+	執行 /usr/lib/spark/sbin/start-all.sh or start-master.sh
+
+
+
+
+
+	測試Spark 是否安裝順利
+	在/usr/lib/spark 裡面執行以下指令
+		./bin/run-example SparkPi 10
+
+	如果有跑出以下結果，代表安裝順利
+		14/10/05 14:08:02 INFO SparkContext: Job finished: reduce at SparkPi.scala:35, took 1.533050868 s ,Pi is roughly 3.142236
+
+	for python
+		./bin/spark-submit examples/src/main/python/pi.py 10
+
+
+UnicodeEncodeError: 'ascii' codec can't encode character u'\ufffd' in position 164: ordinal not in range(128)
+
+
+
+ HadoopRDD: Input split: file:/home/shuk/tmp:872415232+33554432
+先切檔\?ls -asl 
+
+
+http://gradyli.wordpress.com/2008/12/10/python%E7%9A%84non-ascii-character-error/
+
+
+\ufffd 代表utf-8沒有該自馬
+
+out of spark worker memory
+
+
+
+
+
+java -XX:+PrintFlagsFinal -version | grep -iE 'HeapSize|PermSize|ThreadStackSize'
+get java heap memory
+
+增加heap memory
+export _JAVA_OPTIONS="-Xmx10g"
+
+
+
+tmp2 12s 1 worker
+
+SPARK_DRIVER_MEMORY=1G
+The location to set the memory heap size (at least in spark-1.0.0) is in conf/spark-env. The relevant variables are SPARK_EXECUTOR_MEMORY & SPARK_DRIVER_MEMORY. More docs are in the deployment guide
+
+Also, don't forget to copy the configuration file to all the slave nodes.
+
+python encode problem 
+http://gradyli.wordpress.com/2008/12/10/python%E7%9A%84non-ascii-character-error/
+
+
+
+
+
+
+
+
+note
+www.0.gz
+
+xzcat www.0.gz
+
+Oct  5 00:00:01 日期時間
+10.0.0.251 F5 的 ip (有 .251 和 .252 兩台做 HA)
+14.198.183.117 client ip
+10.0.13.9:80 server ip:port
+200 http status code
+6 process time (ms)
+GETwww.gamesofa.com/big/mj.php?struct&enableRC&bundleid=com.godgame.bigtwod.android&version=3.7.8&rand=166
+
+
+
+2m rows is fine
+2.5m rows is bad
+
+out of memory of java heap 
+因為shuffle的關係?
+
+
+
+worker online
+
+1. start-master.sh 
+2. start-slaves.sh
+
+above equil start-all.sh
+
+
+configuration
+
+1. /etc/hosts , set server name with ip
+2. /usr/lib/spark/conf/slaves , set all workers server name
+3. check ssh-key on all machine , there are all keys for each machine
+4. 
+
+
+todo build with spark sql and hadoop
+

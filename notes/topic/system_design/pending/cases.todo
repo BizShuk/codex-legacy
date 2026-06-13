@@ -1,0 +1,15 @@
+
+system design:
+規劃一個SMS 系統的資料庫，需要哪些表格，包含欄位、類型等。
+另外給某些條件查詢問怎麼寫SQL。
+另外還有零零總總的延伸問題像是怎麼避免兩筆交易同時寫入造成金額錯誤等等 (dirty
+write, lost update相關)
+還有一些https問題，公鑰密鑰，會問 certificate怎麼運作，要了解PKI以及CA機制
+
+(下面是我建議閱讀的資料:
+2PL, isolation level, deadlock provention mechanism wait-die, wound-wait
+MySql的MyISAM和Innodb的比較
+Index怎麼做的，Secondary Index和Primary Index差在哪
+除了RDBMS之外，document database, graph database其他的database最好有些了解
+更進一步可以看有哪些storage engine, 像是LSM-tree, Btree內部長甚麼樣子)
+

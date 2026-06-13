@@ -1,0 +1,22 @@
+1. 安裝 Win32DiskImager-0.9.5-install (on Win7)
+2. 將下載回來的ISO 燒進 SDcard
+3. SD card 插入Rpi插電開機
+
+
+default user:pi 
+default pass:raspberry
+
+sudo raspi-config  進入到開機設定
+
+# sd card太大的問題
+expanded filesystem
+
+locale 設定
+	en_GS
+	en_US.UTF8
+	zh_TW.BIG5
+	zh_TW.UTF8
+
+keyboard 設定
+
+選Microsoft Natural => other => English[US]

@@ -1,0 +1,5 @@
+Graph Cases:
+    ☐ Simlp undirected graph, no negative, no cycle
+    ☐ Contain negative weight
+    ☐ With cycle
+    ☐ With negative weight cycle

@@ -1,0 +1,25 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.4.0
+    hooks:
+      - id: check-json
+      - id: pretty-format-json
+        args: [--autofix] # https://github.com/pre-commit/pre-commit-hooks#pretty-format-json
+      - id: check-yaml
+      - id: check-xml
+      - id: check-added-large-files
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      #- id: no-commit-to-branch # default master branch. pattern style [--pattern, release/.*]
+      - id: mixed-line-ending
+        args: [--fix={lf}] # auto,crlf,lf,no
+      - id: detect-private-key
+      - id: detect-aws-credentials
+      - id: check-merge-conflict
+
+
+#  - repo: https://github.com/antonbabenko/pre-commit-terraform
+  # available hooks: https://github.com/antonbabenko/pre-commit-terraform#available-hooks
+#    rev: v1.45.0
+#    hooks:

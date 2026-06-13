@@ -1,0 +1,28 @@
+Caching:
+    ☐ Lazy Caching aka Cache-aside
+        Populate the cache only when data is requested
+        => hotspot loading if cache miss
+    ☐ Write-Through
+        When data is updated, it updates the cache as well, just right after update DB store.
+
+        Pros => avoid cache miss, shift read op delay(cache miss) to write op, cache is up-to-date
+        Cons => unnecessary memory usage, need a mechanism to populate data if cache is not existing(beginning or expired).
+    ☐ Write-Behind aka Write-Back
+        Only write to the cache. Writing to storage is postponed until the modified content is about to be replaced.
+    ☐ Read-Through
+        Access cache only. If the cache is not existing, cache store will load it and return.
+    ☐ Refresh-Ahead
+        Automatically refresh recently accessed cache prior to its expiration
+
+        Cons=> Same problem (unnecessary memory usage) with Write-Through
+
+
+Frow Write OP:
+    ☐ Write allocate (fetcg on write), usually along with write-back
+        Fetch after write op
+    ☐ No-write allocate ( write-non-allocate, write around), usually along with write-through
+        Just write into data store.
+Cache Penetration:
+    Cache miss and data is not existing in DB.
+    Cycling query DB
+

@@ -1,0 +1,89 @@
+DS & Algo:
+
+    Array:
+        - Quicksort
+
+    Linked List:
+        - reverse linked list in-place, with head or from middle
+
+    Stack:
+        ✔ Monotonic Stack, find next bigger/smaller number
+
+    Tree:
+        ✔ LCA
+
+    Queue:
+
+    heap:
+        - Two heap for medium value  max < min (not, min < max) and balancing
+        - minheap to keep top-N largerest number
+        - maxheap to keep top-N smallest number
+
+    DP:
+        ✔ [Recursive] Top-Down (Duplication calculation) + Memorization
+        return dp(i-1) + dp(i-2)
+        ✔ [Iterative] Bottom-Up = Tabulation
+        ex: dp[i] = dp[i-1] + dp[i-2] , i = 1 -> n
+        It can use sum/ as dp column  1 ~ sum
+        ex: c1, c2 = c2, c1+c2
+        ✘ If the original problem requires "ALL" subproblems to be solved, tabulation usually outperformes memoization by a constant factor.
+        ✘ If only "SOME" of the subproblems need to be solved for the original problem to be solved, then memoization is preferrable since the subproblems are solved lazily.
+        ✔ LCS
+
+    BFS:
+        - [iterative] push node to queue and remove one by one
+        - Only keep stack on previous one node
+
+    DFS:
+        - [recursive] use tree node structure, go as deep as posible
+        - [iterative] push current node to stack and pop one by one
+        - Keep previous stack on the line
+        - Variant on Array, choose or not on each element
+        - if look for list of result, combination, check some conditions meet and put the result into array outside of function
+
+    Dijkstra's shortest path:
+        BFS combines with Min-Heap to look minimum edge first.
+        Push nextNode into it and pop one to process further.
+
+    DAG:
+        Post-Order effect =>. The deeper node will finish before shallower node
+
+    Topological Sort:
+        Direct Acycle Graph
+
+    BackTracking:
+        - Compare to DFS, BackTracking will stop if condition is matched (won't go to all leafs)
+        - Don't forget about brute force
+
+    Two Pointers:
+        - Move pointers based on contraint (window size, sum, ...etc)
+        - Check equal case when moving pointers
+        ☐
+
+
+
+Golang syntax check:
+    - Check fmt remove
+    - Check import correct
+    - Check unused variables
+    - Don't optimize complex if-else condition in first place. ref:       [FindTargetInSortedRotated](../binerysearch/find_target_in_sorted_rotated.go)
+    - Strings.Compare() 1 = true, -1 = false, 0 = equal
+    - Rotation:  (byte-base(65 or 97)+rotation)%26+base
+    - sort.Slice(x, func(i, j int) bool)
+
+Tips:
+    - Levarage Max for maximum replacement
+        if max < xxx { max = xxx }  => max = Max(max, xxx)
+    - return bool with condition `return n == 1` without if-else
+
+Ascii code:
+    - 0(48) -> 9(57)
+    - A(65) -> Z(90)
+    - a(97) -> z(122)
+    - (40 )41
+    - [91 ]93
+    - {123 }125
+
+String comparison:
+    - gg > gG     103,103 > 103,71
+    - gg1 > gg    103,103,49 > 103,103

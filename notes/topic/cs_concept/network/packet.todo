@@ -1,0 +1,8 @@
+
+
+Packet structure in RFC 1122:
+    Encapsulation of application data by layer
+    ☐ Frame header, Frame data, Frame footer
+    ☐ Frame data = IP header, IP data
+    ☐ IP data = UDP header, UDP data
+    ☐ UDP data = Application data

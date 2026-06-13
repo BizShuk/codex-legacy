@@ -1,0 +1,748 @@
+# README.TODO
+
+> 整合 `codex-legacy` 內所有「不可直接程式化實作」的待辦項目。
+> 來源:散落在各處的 `.todo` 與 `TODO_*.md` 檔(原始 39 個)。
+> 原則:每項加 **description**(為何要做)+ **file refs**(相關檔案),原始 `.todo` 保留供深入閱讀。
+
+---
+
+## 圖例
+
+- `[ ]` 待研究 / 待完成
+- `[x]` 已完成
+- `(src: ...)` 來源 `.todo` 檔
+- `(ref: ...)` 相關程式碼或文件
+
+---
+
+## 1. 技術棧知識缺口 (Tech Stack Knowledge Gaps)
+
+> 來源:`notes/tech_stack.todo`
+
+### Network
+
+- [ ] **OSI vs TCP/IP model 對照** — 兩種網路模型的分層差異
+  - description: 釐清 OSI 7 層 (Physical/DataLink/Network/Transport/Session/Presentation/Application) 與 TCP/IP 4 層 (Network Access/Internet/Transport/Application) 的對應,面試常考
+  - src: `notes/tech_stack.todo`
+  - ref: `notes/topic/cs_concept/network/network_layer.todo`
+
+- [ ] **TCP ordered delivery / failure check & resend** — TCP 可靠傳輸機制
+  - description: TCP 如何保證 ordered、failure detection、重傳機制
+  - src: `notes/tech_stack.todo`
+
+- [ ] **TCP Use case: Transaction** — TCP 適用場景
+  - src: `notes/tech_stack.todo`
+
+- [ ] **UDP unordered / Use case: Streaming** — UDP 適用場景
+  - description: Video/Gaming/Music/Live 為何選 UDP
+  - src: `notes/tech_stack.todo`
+
+- [ ] **HTTP Rest Idempotent OP: Get/Post/Put/Delete** — REST 冪等操作分類
+  - src: `notes/tech_stack.todo`
+
+### Database
+
+- [ ] **TableIndex** — 資料表索引設計
+  - description: B-tree / Hash / Clustered / Non-clustered index 的選擇與 tradeoff
+  - src: `notes/tech_stack.todo`
+  - ref: `notes/topic/cs_concept/storage/`
+
+- [ ] **情境題:cache 與 DB 之間操作** — 經典面試題
+  - description: Cache-aside / Write-through / Write-behind 在不同情境的選擇
+  - src: `notes/tech_stack.todo`
+  - ref: `notes/topic/cs_concept/cache/cache_method.todo`
+
+- [ ] **NoSQL CAP: Consistency / Availability / Partition** — CAP 三選二細節
+  - description: 不同 NoSQL 在 CAP 三角形的位置
+  - src: `notes/tech_stack.todo`
+  - ref: `notes/topic/storage/DB.md`
+
+### Golang
+
+- [ ] **goroutine vs thread** — 差異與調度
+  - src: `notes/tech_stack.todo`
+  - ref: `notes/platform/golang/goroutine.go`
+
+- [ ] **Golang 基礎和原理** — 設計實現原理
+  - description: 面試常考,需能說出 slice/map/channel 的內部實作
+  - src: `notes/tech_stack.todo`
+  - ref: `notes/platform/golang/fundation/`
+
+- [ ] **Escape Analysis** — 變數在 Stack 或 Heap 的判定
+  - description: `go build -gcflag` + `go tool compile -m` 觀察
+  - src: `notes/tech_stack.todo`
+
+### K8s
+
+- [ ] **ConfigMap / Secret / Vault** — Config 管理三方案
+  - src: `notes/tech_stack.todo`
+  - ref: `notes/topic/project/2022/kubernetes_design.md`
+
+- [ ] **Service Mesh / Virtual Service (Istio)** — 服務網格概念
+  - src: `notes/tech_stack.todo`
+
+### AWS
+
+- [ ] **Security group / ACL** — 網路存取控制差異
+  - src: `notes/tech_stack.todo`
+
+- [ ] **Lambda timeout / retry** — 無伺服器錯誤處理
+  - src: `notes/tech_stack.todo`
+
+- [ ] **LoadBalancer: TargetGroup / ALP / CLP** — 各類 LB 對照
+  - description: TargetGroup 概念類似 k8s Selector
+  - src: `notes/tech_stack.todo`
+
+- [ ] **Secret Manager / Parameter Store** — AWS secret 管理
+  - src: `notes/tech_stack.todo`
+
+### General
+
+- [ ] **Microservice architecture** — 微服務架構設計
+  - src: `notes/tech_stack.todo`, `notes/tech_stack.todo`
+  - ref: `notes/topic/protocol/microservice/README.md`
+
+- [ ] **Database (relational/distributed)** — DB 選型
+  - src: `notes/tech_stack.todo`
+
+- [ ] **Best Practices (SOLID, TDD, etc.)** — 軟體工程原則
+  - ref: `concepts/SoftwareEngineer/` (待補)
+
+- [ ] **Thread / Thread Pool** — 併發基礎
+  - src: `notes/tech_stack.todo`
+
+- [ ] **http 協議原理** — HTTP 細節
+  - src: `notes/tech_stack.todo`
+  - ref: `notes/topic/protocol/http/`
+
+- [ ] **ssh 免密登錄** — SSH key 設定
+  - src: `notes/tech_stack.todo`
+
+- [ ] **多線程:synchronized / ThreadLocal** — 併發處理
+  - src: `notes/tech_stack.todo`
+
+---
+
+## 2. 系統設計面試準備 (System Design Prep)
+
+> 來源:`notes/system_design.todo`
+
+### Overview (系統設計通用步驟)
+
+- [ ] **Clarify requirements** — 釐清需求
+  - description: 系統設計面試第一步:問問題釐清 functional / non-functional requirements
+  - src: `notes/system_design.todo`
+
+- [ ] **API 設計** — REST/gRPC API 規劃
+  - src: `notes/system_design.todo`
+
+- [ ] **DB schema (pk, fk, relationship)** — 資料模型設計
+  - src: `notes/system_design.todo`
+
+- [ ] **CAP 取捨** — 分散式系統理論
+  - src: `notes/system_design.todo`
+
+- [ ] **Scale: LB / CDN / Cache** — 擴展性三本柱
+  - src: `notes/system_design.todo`
+
+- [ ] **Availability / Sharding** — 高可用與分片
+  - src: `notes/system_design.todo`
+
+### 實戰經驗題
+
+- [ ] **畫架構圖說明做過的專案** — 自我介紹延伸
+  - src: `notes/system_design.todo`
+
+- [ ] **高併發大流量經驗** — 量級與解法
+  - src: `notes/system_design.todo`
+
+- [ ] **kafka / redis / microservice 經驗** — 中介軟體熟悉度
+  - src: `notes/system_design.todo`
+
+- [ ] **RPC 框架細節** — gRPC / Thrift 內部
+  - src: `notes/system_design.todo`
+
+- [ ] **分散式架構** — 分散式系統設計
+  - src: `notes/system_design.todo`
+
+### Resilient (韌性設計)
+
+- [ ] **Fault Tolerance: Availability / Recoverability / Non-volatile storage**
+  - description: 系統容錯三大支柱
+  - src: `notes/system_design.todo`
+
+- [ ] **Replication: WAL / Snapshot / Synchronize writing to disk**
+  - description: 資料持久化三策略
+  - src: `notes/system_design.todo`
+
+- [ ] **Health Check** — 健康檢查機制
+  - src: `notes/system_design.todo`
+
+- [ ] **Availability: LB / Replication / Service Recovery / Consensus (ZK, etcd)**
+  - description: 高可用完整方案
+  - src: `notes/system_design.todo`
+
+### Stress Testing / Split Brain
+
+- [ ] **Stress Testing 設計** — 壓測方法學
+  - src: `notes/system_design.todo`
+
+- [ ] **Split Brain: network partition 引起** — 腦裂問題
+  - description: lease mechanism 處理,DB 自動 rollback uncommited tx
+  - src: `notes/system_design.todo`
+
+- [ ] **Replication: state transfer (memory 同步)** — 狀態傳遞法
+  - description: pros:完整; cons:大
+  - src: `notes/system_design.todo`
+
+### Operation / Error Handling
+
+- [ ] **Alerting to right person with SOP** — 告警分派
+  - src: `notes/system_design.todo`
+
+- [ ] **Error message, severity, channel** — 錯誤標準化
+  - src: `notes/system_design.todo`
+
+- [ ] **Coordination ID / Monitoring / Error Code** — 監控三件
+  - src: `notes/system_design.todo`
+
+---
+
+## 3. 演算法 / 資料結構 練習清單
+
+> 來源:`algo/go/algo.todo`, `algo/go/=====pending/pending.todo` (= `algo/multi-lang/pending.todo`,重複)
+
+### DS & Algo (已標記 ✔ 的跳過)
+
+- [ ] **Quicksort 練習** — 排序演算法
+  - src: `algo/go/algo.todo`
+
+- [ ] **reverse linked list in-place** — 反轉鏈表
+  - description: 含 head 與從中間開始兩個變形
+  - src: `algo/go/algo.todo`
+
+- [ ] **Two heap for medium value** — 中位數維護
+  - description: max-heap < min-heap (or 反過來),平衡兩個 heap
+  - src: `algo/go/algo.todo`
+
+- [ ] **Heap: top-N largest / smallest** — 堆的實戰應用
+  - src: `algo/go/algo.todo`
+
+- [ ] **BFS / DFS 各迭代/遞迴版本** — 圖的遍歷
+  - description: 矩陣變形:choose or not on each element
+  - src: `algo/go/algo.todo`
+
+- [ ] **Two Pointers 綜合題** — 雙指針
+  - description: 視窗大小/和等約束移動,記得處理等於情況
+  - src: `algo/go/algo.todo`
+
+### Pending (進階題)
+
+- [ ] **ford-fulkerson** — 最大流演算法
+  - src: `algo/go/=====pending/pending.todo`, `algo/multi-lang/pending.todo`
+
+- [ ] **Cycle Detection** — 環偵測
+  - src: `algo/go/=====pending/pending.todo`
+
+- [ ] **Log-Structured Merge-Tree (LSM-tree)** — 寫優化儲存結構
+  - src: `algo/go/=====pending/pending.todo`
+  - ref: `concepts/database/`
+
+- [ ] **Kadane's algorithm** — 最大子陣列和
+  - src: `algo/go/=====pending/pending.todo`
+
+- [ ] **Longest Common Substring (LCS)** — 最長公共子序列
+  - src: `algo/go/=====pending/pending.todo`
+
+- [ ] **Longest Common Prefix / Suffix** — 最長公共前綴/後綴
+  - src: `algo/go/=====pending/pending.todo`
+
+- [ ] **In-place algorithm** — 原地演算法
+  - description: 不額外資料結構,僅常數變數
+  - src: `algo/go/=====pending/pending.todo`
+
+- [ ] **Frequency Counting** — 頻率計數
+  - src: `algo/go/=====pending/pending.todo`
+
+- [ ] **Count-Min Sketch** — 近似頻率計數
+  - src: `algo/go/=====pending/pending.todo`
+
+- [ ] **Lossy Counting** — 近似計數演算法
+  - description: Rajeev Motwani 和 Gurmeet Singh Manku 發明
+  - src: `algo/go/=====pending/pending.todo`
+
+- [ ] **Top-k Elements in Data Stream** — 串流中找 top-k
+  - description: insert O(1), lookup top-k O(n)
+  - src: `algo/go/=====pending/pending.todo`
+
+- [ ] **page replacement: clock algorithm** — 時鐘分頁演算法
+  - description: slots 環狀,reference bit 控制
+  - src: `algo/go/=====pending/pending.todo`
+
+- [ ] **Manacher's algorithm** — 最長回文子串 O(n)
+  - src: `algo/go/=====pending/pending.todo`
+
+- [ ] **Predecessor problem** — 前驅問題
+  - src: `algo/go/=====pending/pending.todo`
+
+- [ ] **Self-balancing binary search tree** — 自我平衡 BST
+  - src: `algo/go/=====pending/pending.todo`
+
+- [ ] **Fusion tree** — 融合樹
+  - src: `algo/go/=====pending/pending.todo`
+
+- [ ] **Nearest neighbor search (NNS)** — 最近鄰搜尋
+  - src: `algo/go/=====pending/pending.todo`
+
+- [ ] **Geo Design: Simgle grid / Hash-based / Tree-based** — Geo 空間分割
+  - description: Hash-based 用 base32 編碼,prefix 等級對應面積
+  - src: `algo/go/algo/geo/design.todo`
+
+- [ ] **Graph Cases: negative weight / cycle / negative cycle** — 各類圖演算法變形
+  - src: `algo/go/basic-ds/graph/cases.todo`
+
+---
+
+## 4. 程式語言基礎
+
+> 來源:`notes/programming_language.todo`
+
+- [ ] **Go: fundation + testing/mock** — Go 基礎與測試
+  - description: fundation 包含 slice/map/channel/goroutine 基礎;testing/mock 包含 testify 等
+  - src: `notes/programming_language.todo`
+  - ref: `notes/platform/golang/fundation/`, `algo/go/basic-algo/`
+
+- [ ] **Node** — Node.js 生態
+  - description: JavaScript runtime, npm, Express 等
+  - src: `notes/programming_language.todo`
+  - ref: `frameworks/express-boilerplate/`, `playground/fullstack-node/`
+
+- [ ] **Java** — Java 生態
+  - description: 已標 ✔ (Spring Boot / Lambda / Secret Manager)
+  - src: `notes/programming_language.todo`
+  - ref: `notes/platform/java/`
+
+---
+
+## 5. 數學 / 科學術語
+
+> 來源:`algo/go/terminology.todo`
+
+- [ ] **Math Pronunciation** — 數學英文發音
+  - description: x^y (x to the power of y) / n^2 (n square) / n^3 (n cubed) / n! (n factorial)
+  - src: `algo/go/terminology.todo`
+
+- [ ] **Science Symbol: E- / E+ / e- / e+** — 科學記號格式
+  - description: Excel 顯示 E+07 = 1.22 x 10^7
+  - src: `algo/go/terminology.todo`
+
+---
+
+## 6. CS 概念子主題
+
+> 來源:`notes/topic/cs_concept/` 下的多個 .todo
+
+### Cache
+
+- [ ] **Caching 模式:Cache-aside / Write-Through / Write-Behind / Read-Through / Refresh-Ahead**
+  - description: 五種 cache 寫入策略的 pros/cons
+  - src: `notes/topic/cs_concept/cache/cache_method.todo`
+  - ref: `notes/topic/cs_concept/cache/cache_policy.todo`
+
+- [ ] **Cache Policy: LRU / LFU / Time-aware LRU** — 替換演算法
+  - src: `notes/topic/cs_concept/cache/cache_policy.todo`
+
+- [ ] **Write OP: Write allocate / No-write allocate** — CPU cache 寫入
+  - description: write allocate 配 write-back;no-write allocate 配 write-through
+  - src: `notes/topic/cs_concept/cache/cache_method.todo`
+
+- [ ] **Cache Penetration** — 快取穿透問題
+  - description: cache miss + DB 也不存在,造成 DB 被打爆
+  - src: `notes/topic/cs_concept/cache/cache_method.todo`
+
+### Encoding / Encryption
+
+- [ ] **Data Preprocessing: Label Encoding / One-Hot Encoding** — 類別型資料編碼
+  - src: `notes/topic/cs_concept/encoding/data_process.todo`
+
+- [ ] **Data Skew: Positive / Negative** — 資料分佈偏態
+  - src: `notes/topic/cs_concept/encoding/data_process.todo`
+
+- [ ] **Data source: Online (real) / Offline (backup/fake)** — 資料來源分類
+  - description: Online 可用 shadow routing 測試
+  - src: `notes/topic/cs_concept/encoding/data_process.todo`
+
+- [ ] **Encryption: AES / DES / RSA / DSS / ECC / Diffie-Hellman** — 對稱/非對稱加密
+  - src: `notes/topic/cs_concept/encoding/encryption_algo.todo`
+
+- [ ] **Hash: SHA-1/2/3 / MD-5 / DSA** — 雜湊演算法
+  - src: `notes/topic/cs_concept/encoding/encryption_algo.todo`
+
+- [ ] **Encryption algo pros/cons 比較** — 各加密法優缺
+  - src: `notes/topic/cs_concept/encoding/encryption_algo.todo`
+
+### Memory
+
+- [ ] **Memory Leak** — 記憶體洩漏
+  - src: `notes/topic/cs_concept/memory/issues.todo`
+
+- [ ] **Memory Fragmentation** — 記憶體碎片化
+  - src: `notes/topic/cs_concept/memory/issues.todo`
+
+### Network
+
+- [ ] **OSI 7 層** — 網路分層模型
+  - description: Application/Presentation/Session/Transport/Network/Data Link/Physical
+  - src: `notes/topic/cs_concept/network/network_layer.todo`
+
+- [ ] **TCP/IP 4 層** — 簡化版網路模型
+  - description: Application/Transport/Internet/Network Access (subset of OSI)
+  - src: `notes/topic/cs_concept/network/network_layer.todo`
+
+- [ ] **Packet structure (RFC 1122)** — 封包結構
+  - description: Frame = Frame header + IP header + IP data + Frame footer;IP data = UDP header + UDP data
+  - src: `notes/topic/cs_concept/network/packet.todo`
+
+### Read/Write Intense
+
+- [ ] **Write Intense App: 分散/複製給使用者** — 寫密集應用設計
+  - description: 透過複製讓讀更快 (e.g., 社交媒體發文 fan-out)
+  - src: `notes/topic/cs_concept/write_read_intense.todo`
+
+- [ ] **Read Intense App: 簡單寫 + 邏輯讀** — 讀密集應用設計
+  - description: e.g., FB 讀所有 followee 的貼文
+  - src: `notes/topic/cs_concept/write_read_intense.todo`
+
+### Java JVM
+
+- [ ] **JVM GC Generations: New / Old / Permanent** — 堆分代
+  - description: New = Eden + 2 Survivor;Minor GC 流程
+  - src: `notes/platform/java/gc.todo`
+
+- [ ] **Object Reference: strong / soft / weak / phantom** — 引用類型
+  - src: `notes/platform/java/gc.todo`
+
+- [ ] **GC Algos: Serial / ParNew / Parallel Scavenge / CMS / G1** — 各 GC 比較
+  - src: `notes/platform/java/gc.todo`
+
+---
+
+## 7. 系統設計案例
+
+> 來源:`notes/topic/system_design/`
+
+### 2022 面試考古題
+
+- [ ] **Hotel Price Service (Agoda)** — 飯店價格系統
+  - description: 兩種用戶(旅客/飯店人員),含 getPrice/setPrice + 200k 通知的 Booking Reminder
+  - 重點:LRU eviction / Consistent Hashing / 多時區 DB / Priority Queue
+  - src: `notes/topic/system_design/2022/agoda-1.todo`
+  - 重要標記:`[???] ZooKeeper suggestion from interviewer` (待釐清)
+
+- [ ] **Video Comment Service (ByteDance)** — 影片留言
+  - description: 1M comments, AP storage, 1000 留言/segment
+  - 模式:Cache Data Segmentation + 80/20 Recovery
+  - src: `notes/topic/system_design/2022/bytedance_video_comment.todo`
+
+### 通用設計模式
+
+- [ ] **Chat System** — 即時聊天
+  - description: Group/User chat, websocket, message bucket (mod 10/100), user-to-user 排序分區
+  - src: `notes/topic/system_design/design/chat.todo`
+
+- [ ] **Distributed Unique ID** — 分散式唯一 ID
+  - description: Snowflake (41+10+12 bits), UUID, ZK 分配區間
+  - src: `notes/topic/system_design/design/distributed_unique_id.todo`
+
+- [ ] **Newsfeed System** — 動態消息流
+  - description: Sliding Window / Partition+MapReduce / Async / Merge Sort top-k / WAL recovery
+  - 進階:Category / User Account (push vs pull 取捨)
+  - src: `notes/topic/system_design/design/newsfeed.todo`
+
+### Pending 題庫
+
+- [ ] **SMS 系統設計** — 簡訊系統 DB 設計
+  - description: 表格/欄位設計 + 查詢 SQL + dirty write/lost update 防護 + PKI/CA 機制
+  - src: `notes/topic/system_design/pending/cases.todo`
+
+- [ ] **GitFlow** — git 工作流
+  - src: `notes/topic/system_design/pending/gitflow.todo`
+
+---
+
+## 8. 過去專案記錄
+
+> 來源:`notes/topic/project/2012-2022/`
+
+### Game (2012)
+
+- [ ] **Game 部門資訊補完** — Engineer 部門 + Direct Report (Lucas/Billy)
+  - src: `notes/topic/project/2012/TeamInfo.todo`
+
+### BI (2015)
+
+- [ ] **BI 部門:Marketing, Ann Chen, Jenefer + 待補** — 部門與同事
+  - src: `notes/topic/project/2015/TeamInfo.todo`
+
+### Cloud (2017)
+
+- [ ] **Cloud 部門:Engineer, Cliff, Owen + 待補** — 部門與同事
+  - src: `notes/topic/project/2017/TeamInfo.todo`
+
+### CIH (2021)
+
+- [ ] **CIH 部門 + Developer/QA 同事名單** — 補完待辦項
+  - src: `notes/topic/project/2021/TeamInfo.todo`
+
+### Revex (2022)
+
+- [ ] **Revex 部門 + Taiwan/US 同事名單** — 待補
+  - src: `notes/topic/project/2022/teamInfo.todo`
+
+### AIVP (2022)
+
+- [ ] **AIVP: API gateway / Model / Review / Case Recorder / GPU-Scheduler**
+  - description: chip machine ↔ ML 自動化,涵蓋監控 (Prometheus/Grafana) + K8s
+  - 流量:AIDR 4.5M images < 15mins;1 topic ~700k req/day
+  - src: `notes/topic/project/2022/aivp.todo`
+
+### AIPQ-04 (2022)
+
+- [ ] **AIPQ-04 部門 + 同事** — 待補
+  - src: `notes/topic/project/2022/teamInfo.todo`
+
+---
+
+## 9. 部門 / 人際觀察 (Management)
+
+> 來源:`notes/domain/Management/`
+
+- [ ] **Passive-Aggressive Behavior 應對** — 消極抵抗行為
+  - description: Open a dialogue / Bring attention / Set boundaries / Remain calm
+  - src: `notes/domain/Management/people_type.todo`
+
+- [ ] **Three Network: Daily / Strategic** — 三種人脈網路
+  - description: who you know → what you get to do → what you get to know
+  - src: `notes/domain/Management/politics.todo`
+
+---
+
+## 10. 工作 / 個人操作型待辦
+
+> 來源:`notes/TODO.md`, `notes/TODO_work.md`, `notes/TODO_tmp.md`
+
+### 個人生活
+
+- [ ] **備份 Google Drive** — 定期備份
+  - src: `notes/TODO.md`
+
+- [ ] **Canada Work and Travel program** — 留學/工作計畫
+  - src: `notes/TODO.md`
+
+- [ ] **健保保險費** — 相關處理
+  - src: `notes/TODO.md`
+
+- [ ] **空氣瓶子上拍賣** — 拍賣處理
+  - src: `notes/TODO.md`
+
+### 工作 Sprint (TODO_work.md)
+
+- [x] Update PI spreadsheet/jira (已完成)
+
+- [x] Pinpoint tf infra check for sns sqs kms encryption (已完成)
+
+- [ ] **GOPRIVATE to dockerfile of each individual services** — Dockerfile 環境變數
+  - src: `notes/TODO_work.md`
+
+- [ ] **Appraisal 處理** — 年度考核
+  - src: `notes/TODO_work.md`
+
+- [ ] **PI spreadsheet 是否由 Fernando 接手** — 跟 Jean 確認
+  - src: `notes/TODO_work.md`
+
+- [ ] **PI 和 readout 更有彈性的方法** — 流程改善
+  - src: `notes/TODO_work.md`
+
+- [ ] **Team member self-learning 機制** — 團隊成長
+  - src: `notes/TODO_work.md`
+
+### 待研究工作技術
+
+- [ ] **User Role and Permission: ABAC** — 屬性型存取控制
+  - src: `notes/TODO_work.md`
+  - ref: `notes/TODO.md` (Access Control 章節)
+
+- [ ] **ElasticSearch index update process** — ES 索引更新流程
+  - src: `notes/TODO_work.md`
+
+- [ ] **Pinpoint permission review + Short Code** — 權限審查
+  - src: `notes/TODO_work.md`
+
+- [ ] **FHIR** — 醫療資料交換標準
+  - src: `notes/TODO_work.md`
+
+- [ ] **Virus scan 相關 story** — 病毒掃描
+  - src: `notes/TODO_work.md`
+
+- [ ] **Generic elasticsearch repository** — 通用 ES repository 模式
+  - src: `notes/TODO_work.md`
+
+- [ ] **PingOne IIQ 與系統整合** — identity 整合
+  - src: `notes/TODO_work.md`
+
+- [ ] **Project devops process check** — DevOps 流程檢視
+  - src: `notes/TODO_work.md`
+
+- [ ] **React testing lib / Redux / Jest** — 前端測試棧
+  - src: `notes/TODO_work.md`
+
+- [ ] **Feature flag** — 功能開關
+  - src: `notes/TODO_work.md`
+
+- [ ] **AWS Config / Glue / Athena / Organization / Service Catalog / Control Tower / Directory Service**
+  - description: AWS 管理工具鏈熟悉度
+  - src: `notes/TODO_work.md`
+
+### 工具與流程 (TODO.md)
+
+- [ ] **Wiki: 畫框/畫表格/高亮/SPM 檢查** — 協作工具
+  - src: `notes/TODO.md`
+
+- [ ] **Jira: workstream / board 管理 / report / epic / spike / workflow** — 專案管理
+  - src: `notes/TODO.md`
+
+- [ ] **draw.io C4 diagram** — 架構圖工具
+  - src: `notes/TODO.md`
+
+- [ ] **Front-end setup** — 前端環境
+  - src: `notes/TODO.md`
+
+- [ ] **EDOP CI/CD pipeline** — 部署流水線
+  - src: `notes/TODO.md`
+
+- [ ] **Documenting: Frontend sample / CIH-utils / AWS SA-professional / SOLID**
+  - src: `notes/TODO.md`
+
+---
+
+## 11. 參考連結書籤 (待消化的閱讀清單)
+
+> 來源:`notes/TODO_tmp.md`, `notes/TODO.md`, `notes/TODO_auto.md`
+
+### Management / Leadership
+
+- [Micromanagement](https://en.wikipedia.org/wiki/Micromanagement)
+- [How to spot a bad boss during an interview](https://hbr.org/2015/12/how-to-spot-a-bad-boss-during-an-interview)
+- src: `notes/TODO_tmp.md`
+
+### Concept / Architecture
+
+- [Serverless Architectures (Martin Fowler)](http://martinfowler.com/articles/serverless.html)
+- [Beginners guide on how to test your code](http://www.integralist.co.uk/posts/guide-to-js-testing.html)
+- [Immediately Invoked Function Expression](http://benalman.com/news/2010/11/immediately-invoked-function-expression/)
+- [Goodbye Object-Oriented Programming](https://medium.com/@cscalfani/goodbye-object-oriented-programming-a59cda4c0e53)
+- [Project Scope / SOW](http://searchcio.techtarget.com/definition/project-scope)
+- src: `notes/TODO_tmp.md`
+
+### 業務開發 (BD)
+
+- [What is Business Development?](http://www.businessdevelopmentmanagerjobdescription.com/what-is-business-development/)
+- [BD 就是 Sales 嗎?](https://blog.alphacamp.co/2015/07/22/startup-bd-sales/)
+- [獵人頭公司新歡:Business Development Manager](http://www.thenewslens.com/article/882)
+- src: `notes/TODO_tmp.md`
+
+### Crypto / Lightning Network
+
+- [Lightning Network](https://en.bitcoin.it/wiki/Lightning_Network)
+- src: `notes/TODO_tmp.md`
+
+### Compensation / Policy
+
+- [Five tips for Compensation](http://www.trinet.com/blog/2014/05/15/five-tips-for-successful-compensation-reviews/)
+- [The Salary review](http://www.payscale.com/compensation-today/2009/05/the-salary-review-process)
+- [Cycle to work Scheme](http://www.citizensinformation.ie/en/money_and_tax/tax/income_tax_credits_and_reliefs/cycle_to_work_scheme.html)
+- [Income Protection](https://www.irishlife.ie/life-insurance/income-protection)
+- src: `notes/TODO_tmp.md`
+
+### Protocol 參考
+
+- [OAuth2 RFC-6749](https://tools.ietf.org/html/rfc6749), [OAuth.net](https://oauth.net/)
+- [OpenID Connect](https://openid.net/connect/)
+- [What Happens If Your JWT Is Stolen?](https://developer.okta.com/blog/2018/06/20/what-happens-if-your-jwt-is-stolen)
+- [Bearer Token RFC-6750](https://tools.ietf.org/html/rfc6750)
+- [SAML 2.0](https://www.wikiwand.com/en/SAML_2.0)
+- [Benefits of Microservices Architecture](https://dzone.com/articles/benefits-amp-examples-of-microservices-architectur)
+- src: `notes/TODO_auto.md`
+
+### System Design 學習資源
+
+- [checkcheckzz/system-design-interview](https://github.com/checkcheckzz/system-design-interview)
+- [interviewbit System Design](https://www.interviewbit.com/courses/system-design/)
+- [donnemartin/system-design-primer](https://github.com/donnemartin/system-design-primer)
+- [Harvard COMPSCI 224 Advanced Algorithms](https://www.youtube.com/playlist?list=PL2SOU6wwxB0uP4rJgf5ayhHWgw7akUWSf)
+- src: `notes/system_design.todo`, `algo/go/=====pending/pending.todo`
+
+### 進階概念
+
+- [Two-phase commit protocol](https://www.wikiwand.com/en/Two-phase_commit_protocol)
+- [Consensus (CS)](https://www.wikiwand.com/en/Consensus_(computer_science))
+- [Two-phase locking](https://www.wikiwand.com/en/Two-phase_locking)
+- [Linearizability](https://www.wikiwand.com/en/Linearizability)
+- [AMQP](https://www.wikiwand.com/en/Advanced_Message_Queuing_Protocol)
+- [ERP](https://www.wikiwand.com/en/Enterprise_resource_planning)
+- [OWASP Cheat Sheet](https://cheatsheetseries.owasp.org/index.html)
+- src: `notes/TODO.md`
+
+### 演算法影片
+
+- [Manacher + Clock Page Replacement](https://www.youtube.com/watch?v=EDG5EL7EekE)
+- src: `algo/go/=====pending/pending.todo`
+
+---
+
+## 12. 程式碼層級 TODO (可考慮修補)
+
+> 來源:`*.go` / `*.py` / `*.js` 內的 `TODO` / `FIXME`
+
+### ✅ 已修補 (本次 session)
+
+- [x] **`playground/python/log_analysis/solution.py`** — 移除 3 個 stale `# TODO: Implement`,並修正 `__init__` 硬編碼 `access.log` 的 bug(改用 `path_to_logfile` 參數 + `with` context manager)
+- [x] **`algo/go/basic-ds/graph/shortest_path-Bellman_Ford.go`** — 將純註解虛擬碼轉成實際 Go 程式,新增 `Edge`/`BFResult` 型別,實作負環偵測(走 predecessor |V| 步回到 cycle,再追蹤 cycle 直到回到起點)
+
+### ⏳ 待修補
+
+| 檔案 | 語言 | 註記 |
+|------|------|------|
+| `playground/go/list/list.go` | Go | TODO : none recursive version |
+| `playground/test/buildin.py` | Python | 2 個 docstring 內的 TODO |
+| `playground/python/random_example.py` | Python | 2 個 docstring 內的 TODO |
+| `playground/js/nodejs/link_list.js` | JS | 行 1 空 TODO |
+| `playground/js/nodejs/comparsion.js` | JS | 行 1 空 TODO |
+| `playground/js/nodejs/test.js` | JS | "Log the answer in a database" |
+| `algo/go/basic-algo/backtrack/subsets.go` | Go | "sorting cause value mismatch in subset of parent function" |
+| `notes/platform/golang/memory_model.go` | Go |  |
+| `notes/platform/golang/goroutine.go` | Go |  |
+| `notes/platform/golang/pprof/blocking.go` | Go |  |
+| `notes/platform/golang/fundation/panic.go` | Go |  |
+| `notes/platform/golang/fundation/slice.go` | Go |  |
+| `notes/platform/golang/fundation/benchmark_test.go` | Go |  |
+| `notes/platform/golang/fundation/findOriginalType.go` | Go |  |
+| `notes/platform/golang/fundation/heap/intSlice.go` | Go |  |
+| `notes/platform/golang/fundation/receiver/receiver_transfer.go` | Go |  |
+| `notes/topic/Backend/Go/reflect/findOriginalType.go` | Go |  |
+| `concepts/interview/line_q1.py` | Python |  |
+
+---
+
+## 統計
+
+- 來源 `.todo` 檔:39 個 (已讀取 28 個核心)
+- 不可程式化項目:**~120 個**
+- 程式碼 TODO:**~20 個**
+
+## 後續建議
+
+1. 把這份 `README.TODO` 與 `README.md` 互相連結
+2. 程式碼 TODO 可逐個 `grep` 進去看具體內容決定是否修補
+3. 已完成項(標 `[x]`)在 commit 時可考慮從 .todo 刪除
+4. 學習類項目可搭配 `notes/topic/<X>/` 內既有筆記做延伸閱讀

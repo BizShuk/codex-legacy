@@ -1,0 +1,42 @@
+Video Comment Service:
+    [Pattern]: [Cache Data segmentation] breakdown data to segment into cache instead of loading all.
+    [Pattern]: [80% vs 20% recovery] Recovery process focus on 20% content which has 80% network traffic
+    Requirement:
+        ☐ Users are able to see and leave comments on a video
+        ☐ Some videos might have 1m comments.
+        ☐ Comment is viewed from latest.
+    Functions:
+        Post comment:
+            User sends the request and update the database directly. The cache update can use async way
+        Fetch commnet:
+            User is able to read comment from latest. If the comment is not in cache, it reads the comment segement into cache. Segment ID is (Comment ID%10) + Video ID
+    Data Schema:
+        Comment table:
+            ☐ Video ID
+            ☐ User ID
+            ☐ Comment ID, auto-increment with combination key(video id, user id)
+            ☐ Comment, text or varchar(256)
+            ☐ Timestamp, int
+    Storage:
+        Comment is not a critical service, not need for tx. It can show just something available. There is no relationship between user and video on comment perspective. So, the storage choose will be AP with timestamp range feature. It will similar to Log/Chat service.
+        ☐ ELK/EFK
+        ☐ Mongo
+        ☐ Cassandra
+        ☐ AWS DynamoDB
+    Cache:
+        Each cache segment will contain 1000 comment for a video. All comments will be cached by comment fetch [Cache-aside]. Cache key requests looking for is (comment ID)%1000. And the newest one will be continuous update by comment post [Write-Through].
+        Question:
+            ☐ If new comment is on 2001th. do we create new cache key or shift comment between cache keys?
+            => Create new cache key, shift approach will make logic more complex, and front-end can control the flow. Under 1000 comment cache approach, if the latest comment cache is less than 100 comments, front-end requests more comments from backend.
+            ☐ Using async way to update cache. What if the service failed somewhere?
+            => The cache value will be messy. For full 1000 comment cache, there is no direction impact. But for latest cache, incresing comments, it can setup some timeout and combine with Recovery strategy to resolve.
+    Recovery strategy:
+        RTO:
+            Comment is in Storage already after post function. So, durability is covered. After system failure, all caches are clean. It'll cause hotspot for DB query if service just back onine directly. The RTO comes from how long we resume the caches. Multiple approaches can think about.
+            1. Only load latest comment segment for each video
+            2. Only load latest comment segment for high-viewed(10k, 100k views) video(20% video for 80% traffic). ps: the view can change to [how popular in recent].
+            3. The less preparation process required, the faster the RTO(the serice get back to online) is.
+        RPO:
+            Just cache lost, not a big deal. Handle by timeout, reload.
+    Availability:
+        Use more replicas, choose Availability-featured database

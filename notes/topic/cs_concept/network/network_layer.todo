@@ -1,0 +1,18 @@
+OSI model, Network Layer:
+    ☐ Application,
+    ☐ Presentation
+    ☐ Session
+    ☐ Transport, TCP, UDP, SCTP, FCCP
+    ☐ Network, IP, ICMP, IPsec
+    ☐ Data Link, [???] ATM, ARP, SDLC, HDLC, CSLIP, SLIP, GFP
+    ☐ Physical, wire, physical modem, router
+
+
+Internet Protocol model, TCP/IP model:
+    subset of OSI model
+    ☐ Application, telnet, ftp, http, MQTT
+    ☐ Transport, TCP, UDP
+    ☐ Internet, IPv4 IPv6, routing
+    ☐ Network Access, Ethernet, wi-fi, fiber, mac address
+
+

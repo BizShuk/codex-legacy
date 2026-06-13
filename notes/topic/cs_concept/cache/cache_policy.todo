@@ -1,0 +1,4 @@
+Cache Policy:
+    ☐ Time aware least recently used
+    ☐ LFU, Least Frequent Used
+    ☐ LRU, Least Recently Used

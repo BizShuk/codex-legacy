@@ -1,0 +1,14 @@
+Math Pronunciation:
+    ☐ x^y, x to the power of y.  2^n, n*2
+    ☐ n^2, n square
+    ☐ n^3, n cubed
+    ☐ n! , n factorial
+    ☐ 5! , 5 factorial
+
+
+Science Symbol:
+    科學記號格式。Excel 會在「E」符號右邊顯示對應至小數點移動位數的數字。例如,如果格式是 0.00E+00,而在儲存格中輸入 12,200,000,就會顯示數字 1.22E+07。如果將數字格式變更為 #0.0E+0,就會顯示數字 12.2E+6。
+    ☐ E-
+    ☐ E+
+    ☐ e-
+    ☐ e+

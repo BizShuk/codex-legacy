@@ -1,0 +1,30 @@
+Object is dead:
+    1. Reference Count
+    2. Reachability Analysis
+
+Generation:
+    ☐ New Generation
+        Eden area and Survivor area (survivor from and survivor to)
+        Eden full => Survivor from full => Minor GC => Copy to Survivor to => clear Eden and Survivor from.
+    ☐ Old Generation
+    when sum of age or age over certain value more old gen from survivor
+    ☐ Permenant
+
+Object Reference type:
+☐ strong refenence
+☐ soft refenence
+☐ weak refenence
+☐ Phantom refenence
+
+GC Algo:
+    1. Mark-Clear => slow and large amount of fragments
+    2. Copy => double memory cost
+    3. Mark-Sorting =>
+    4. Generation Colleciton
+    ☐ Serial garbage collector (single-threaded copy algorithm)
+    ☐ ParNew Garbage Collector (Serial+Multithread)
+    ☐ parallel Scavenge collector (multi-threaded replication algorithm, high efficiency)
+    ☐ Serial Old collector (single-threaded mark sorting algorithm)
+    ☐ Parallel Old collector (multi-thread mark sorting algorithm)
+    ☐ CMS collector (multi-threaded mark removal algorithm)
+    ☐ G1 collector (multi-threaded tag sorting algorithm)

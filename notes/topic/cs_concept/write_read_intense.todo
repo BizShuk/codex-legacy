@@ -1,0 +1,12 @@
+System Design:
+    ☐ DB Index design
+    ☐ FB/Twitter post feed
+    ☐
+    Write Intense Application:
+        ☐ To make read faster/easier, it needs to distribute/make a copy to users
+        ☐
+        ☐
+    Read Intense Application:
+        ☐ When writing is simply put data into storage.
+        ☐ For Read, some logics might be needed to get those data out. Like FB reads all followee
+    Hybrid:

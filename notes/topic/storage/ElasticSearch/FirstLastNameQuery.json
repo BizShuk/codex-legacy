@@ -1,0 +1,47 @@
+{
+    "query": {
+        "bool": {
+            "should": [
+                {
+                    "match_phrase": {
+                        "name": {
+                            "query" : "david polito",
+                            "_name": "phrase on name",
+                            "boost": 8.0
+                        }
+                    }
+                },
+                {
+                    "match": {
+                        "name": {
+                            "query": "david polito",
+                            "operator": "and", 
+                            "_name": "all terms on name",
+                            "boost": 2.0
+                        }
+                    }
+                },
+                {
+                    "match": {
+                        "name": {
+                            "query": "david polito",
+                            "operator": "or", 
+                            "_name": "at least one term on name",
+                            "boost": 1.8
+                        }
+                    }
+                },
+                {
+                    "match": {
+                        "name": {
+                            "query": "david polito",
+                            "fuzziness": 2,
+                            "_name": "fuzzy on name",
+                            "boost": 1.0
+                        }
+                    }
+                },
+            ]
+        }
+    }
+}

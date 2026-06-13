@@ -1,0 +1,25 @@
+{
+  "name": "test",
+  "version": "0.1.1",
+  "description": "no",
+  "main": "index.js",
+  "scripts": {
+    "test": "what is this"
+  },
+  "dependencies": {
+    "socket.io": "lastest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bizshuk/express.git"
+  },
+  "keywords": [
+    "no"
+  ],
+  "author": "Shuk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bizshuk/express/issues"
+  },
+  "homepage": "https://github.com/bizshuk/express#readme"
+}
