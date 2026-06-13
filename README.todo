@@ -734,6 +734,42 @@
 
 ---
 
+## 13. propertySources TODO (Go property chain)
+
+> 來源:`frameworks/property-sources-go/README.md`
+
+### ✅ 已修補 (本次 session)
+
+- [x] **Get home dir .env file** — 新增 `HOME` protocol + `loadFromHomeEnv`,加入 chain 最低優先
+  - 修改:`utils/url.go`(加 `HOME` 常數)、`io/handler.go`(新增 `loadFromHomeEnv`)、`propertyChain.go`(加 `home://.env`)
+
+- [x] **Extend property source type: json** — 改用 `encoding/json.Decoder` 解析真正的 JSON object
+  - 修改:`property/json.go`(移除假的 `=` 解析,改用 stdlib)
+
+- [x] **Extend property source: ftp** — 修 bug:舊版用 `os.Open` 假裝 FTP,現改為 log warning + 回傳空 reader(不誤導)
+  - 修改:`io/handler.go`(`loadFromFtp` 加註解 + 警告)
+
+### ⏳ 待修補
+
+- [ ] **Extend profile concept** — 環境切換 (dev/qa/cert/production)
+  - description: 仿 create-react-app 的 .env.{profile} 機制
+  - src: `frameworks/property-sources-go/README.md`
+  - ref: [create-react-app env files](https://create-react-app.dev/docs/adding-custom-environment-variables/#what-other-env-files-can-be-used)
+
+- [ ] **Customized registor** — 使用者可註冊自訂 property 來源
+  - description: 提供 API 讓使用者註冊特定 property file
+  - src: `frameworks/property-sources-go/README.md`
+
+- [ ] **Extend property source type: yaml** — YAML 解析
+  - description: `GetPropertyHandler` 已有 `case YAML` 但無實作
+  - src: `frameworks/property-sources-go/README.md`
+  - ref: `frameworks/property-sources-go/property/properties.go` (case YAML 空)
+
+- [ ] **Increase code coverage** — 提升測試覆蓋率
+  - src: `frameworks/property-sources-go/README.md`
+
+---
+
 ## 統計
 
 - 來源 `.todo` 檔:39 個 (已讀取 28 個核心)
